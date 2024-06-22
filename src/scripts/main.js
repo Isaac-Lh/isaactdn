@@ -43,7 +43,7 @@ window.addEventListener("click", e => {
     };
 
     //play hit sound
-    let hitSound = new Audio("../../assets/audio/hitHurt.wav");
+    let hitSound = new Audio("../../assets/audio/hitHurt.mp3");
     hitSound.volume = 0.3;
     hitSound.play();
 });
