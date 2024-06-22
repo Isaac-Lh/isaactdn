@@ -1,0 +1,54 @@
+@font-face {
+    font-family: PixeBoy;
+    src: url("../../assets/fonts/Pixeboy.TTF");
+}
+
+::root {
+    --height: 75px;
+}
+
+* {
+    cursor: none;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+
+    background-color: #000000;
+}
+
+#cnv {
+    margin: 0 auto;
+
+    position: fixed;
+    z-index: -1;
+}
+
+
+.tape {
+    position: fixed;
+
+    margin-top: 300px;
+
+    display: flex;
+    justify-content: center;
+
+    height: var(--height);
+    width: 100vw;
+
+    align-items: center;
+    text-align: center;
+
+    word-spacing: 10px;
+    letter-spacing: 5px;
+
+    font-size: 20px;
+
+    background-color: rgb(18, 25, 51);
+
+    color: #faddb2;
+    font-family:Pixeboy;
+
+    image-rendering: pixelated;
+}
