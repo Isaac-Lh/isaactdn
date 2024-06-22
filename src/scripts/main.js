@@ -35,7 +35,7 @@ let cursor = new Cursor();
 
 let nutTex = document.getElementById("nut");
 
-let hitSound = new document.getElementById("hitHurt");
+let hitSound = document.getElementById("hitHurt");
 hitSound.volume = 0.3;
 
 window.addEventListener("click", e => {
