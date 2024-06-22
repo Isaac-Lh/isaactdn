@@ -1,8 +1,6 @@
 class Particle {
-    constructor(imageSRC,x,y,vX,vY,sX,sY) {
-        this.texture = new Image();
-        this.texture.src = imageSRC;
-        this.texture.style.imageRendering = "pixelated";
+    constructor(img,x,y,vX,vY,sX,sY) {
+        this.texture = img
 
         this.x = x;
         this.y = y;

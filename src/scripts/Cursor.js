@@ -1,8 +1,6 @@
 class Cursor {
     constructor() {
-        this.texture = new Image()
-        this.texture.src = "../../assets/images/hammer.png";
-        this.texture.style.imageRendering = "pixelated";
+        this.texture = document.getElementById("hammer");
         
         this.x = 0;
         this.y = 0;

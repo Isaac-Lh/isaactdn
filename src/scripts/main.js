@@ -33,13 +33,13 @@ let cY = 0;
 let easing = 0.03;
 let cursor = new Cursor();
 
-let audios = []
+let nutTex = document.getElementById("nut");
 
 window.addEventListener("click", e => {
     // emit particles
     for(i=0; i < 10; i++) {
         let size = randomInt(21,32);
-        dustParticles.push(new Particle("../../assets/images/nut.png",cX,cY,Math.random() * 2 - 1, 0.5 +Math.random() * 0.5,size,size));
+        dustParticles.push(new Particle(nutTex,cX,cY,Math.random() * 2 - 1, 0.5 +Math.random() * 0.5,size,size));
     };
 
     //play hit sound

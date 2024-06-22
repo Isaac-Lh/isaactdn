@@ -18,6 +18,10 @@ body {
     background-color: #000000;
 }
 
+.img {
+    display: none;
+}
+
 #cnv {
     margin: 0 auto;
 
