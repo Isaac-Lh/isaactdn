@@ -2,8 +2,12 @@ class Box {
     constructor(img,x,y,w,h,color) {
         this.img = img;
 
-        this.x = x;
-        this.y = y;
+        this.bX = x;
+        this.bY = y;
+
+        this.x = this.bX;
+        this.y = this.bY;
+
         this.w = w;
         this.h = h;
 

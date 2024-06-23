@@ -43,8 +43,8 @@ document.addEventListener("touchmove", e => {
 let cX = 0;
 let cY = 0;
 
-let easing = 0.03;
-let cursor = new Cursor();
+const easing = 0.02;
+const cursor = new Cursor();
 
 // arrays setup
 let dustParticles = [];

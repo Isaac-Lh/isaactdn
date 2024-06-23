@@ -8,6 +8,8 @@ class Cursor {
         this.angle = 0
 
         this.flipped = false;
+
+        this.s = 1.5;
     }
 
     update(w,x,y) {
@@ -26,8 +28,8 @@ class Cursor {
         ctx.rotate(toRad(this.angle));
 
         if(this.flipped) {
-            ctx.scale(-1,1);
-        } else ctx.scale(1,1);
+            ctx.scale(-1 * this.s,1 * this.s);
+        } else ctx.scale(1 * this.s,1 * this.s);
 
         ctx.drawImage(this.texture,-this.texture.width/2,-this.texture.height/2);
         ctx.restore();
