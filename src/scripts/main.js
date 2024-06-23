@@ -1,6 +1,15 @@
 const cnv = document.getElementById("cnv");
 const ctx = cnv.getContext("2d");
 
+let nutTex = document.getElementById("nut");
+let hammer = document.getElementById("hammer");
+let block = document.getElementById("block");
+let gear = document.getElementById("gear");
+let wrench = document.getElementById("wrench");
+
+let hitSound = document.getElementById("hitHurt");
+let hitMetal = document.getElementById("hitMetal");
+
 const colors = ["#78ABA8", "#E7D37F", "#FD9B63", "#E88D67"];
 
 const speed = 1;
@@ -37,39 +46,57 @@ let cY = 0;
 let easing = 0.03;
 let cursor = new Cursor();
 
-let nutTex = document.getElementById("nut");
-
-let hitSound = document.getElementById("hitHurt");
-hitSound.volume = 0;
-
-let audios = [];
-
-function spawnParticles() {
-    // emit particles
-    for(i=0; i < 10; i++) {
-        let size = randomInt(21,32);
-        dustParticles.push(new Particle(nutTex,cX,cY,Math.random() * 2 - 1, 0.5 +Math.random() * 0.5,size,size));
-    };
-
-    let hs = new Audio(hitSound.src);
-    hs.volume = 0.3;
-
-    //play hit sound
-    hs.play();
-    audios.push(hs);
-
-    hs.addEventListener("ended", () => {
-        audios.splice(audios.indexOf(hs),1);
-    });
-
-    return;
-};
-
-window.addEventListener("click", spawnParticles);
-
-// particles setup
+// arrays setup
 let dustParticles = [];
 let drops = [];
+let audios = [];
+
+// boxes
+let boxes = [new Box(block,50,50,150,150,"red")];
+
+let inBlock = false;
+
+let partsTexs = [gear,wrench,nutTex];
+
+function playSound(sound,volume) {
+    let s = new Audio(sound.src);
+    s.volume = volume;
+
+    //play hit sound
+    s.play();
+    audios.push(s);
+
+    s.addEventListener("ended", () => {
+        audios.splice(audios.indexOf(s),1);
+    });
+}
+
+function handleClick() {
+    if (inBlock) {
+        // emit particles
+        for(i=0; i < 10; i++) {
+            let partTex = partsTexs[randomInt(0,partsTexs.length-1)]
+            let size = randomInt(21,32);
+            dustParticles.push(new Particle(partTex,cX,cY,Math.random() * 2-1, Math.random() * 1-0.5,size,size,true,false));
+        };
+
+        playSound(hitMetal,0.4);
+        return
+    }
+    
+    else {
+        // emit particles
+        for(i=0; i < 10; i++) {
+            let size = randomInt(21,32);
+            dustParticles.push(new Particle(nutTex,cX,cY,Math.random() * 2 - 1, 1 +Math.random() * 0.5,size,size,false,true));
+        };
+
+        playSound(hitSound,0.4);
+        return;
+    }
+};
+
+window.addEventListener("click", handleClick);
 
 for(i=0;i<100;i++) {
     drops.push(new Droplet());
@@ -92,18 +119,47 @@ function animate(timestamp) {
 
     cursor.update(cnv.width,cX,cY);
 
+    inBlock = false;
+    boxes.forEach(box => {
+        // if in box
+        boxes.forEach(box => {
+            if (box.IsInPos(mouseX,mouseY)) {
+                inBlock = true;
+            }
+        });
+        box.update(deltaTime);
+    });
+    
     // droplets
     drops.forEach((drop) => {
         drop.update(deltaTime);
     })
 
+    dustParticles = dustParticles.filter(dp => dp.markedForDeletion == false);
+
     //particles update
     dustParticles.forEach((dp) => {
-        if (dp.y >= cnv.height) {
-            dustParticles.splice(dustParticles.indexOf(dp), 1);
+        if (dp.bouncable) {
+            if (dp.bounces >= 4) {
+                dp.markedForDeletion = true;
+            } else {
+                if (dp.y >= cnv.height || dp.y < 0){
+                    dp.bounces += 1;
+                    dp.vY *= -1;
+                }
+                if (dp.x >= cnv.width || dp.x < 0){
+                    dp.bounces += 1;
+                    dp.vX *= -1;
+                }
+            }
+
         } else {
-            dp.update(deltaTime);
+            if (dp.y >= cnv.height) {
+                dp.markedForDeletion = true;
+            }
         }
+
+        dp.update(deltaTime);
     })
 
     //draw
@@ -112,6 +168,10 @@ function animate(timestamp) {
     drops.forEach((drop) => {
         drop.draw(ctx);
     })
+
+    boxes.forEach(box => {
+        box.draw(ctx);
+    });
 
     dustParticles.forEach((dp) => {
         dp.draw(ctx)
