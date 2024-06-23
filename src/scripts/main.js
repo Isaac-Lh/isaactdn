@@ -52,8 +52,9 @@ let drops = [];
 let audios = [];
 
 // boxes
-let boxes = [new Box(block,50,50,150,150,"red")];
+let boxes = [];
 let currentBlock = null;
+let cb = undefined;
 
 let inBlock = false;
 
@@ -77,6 +78,8 @@ function handleClick() {
         if (currentBlock != null) {
             currentBlock.x += randomInt(-20,20);
             currentBlock.y += randomInt(-20,20);
+
+            currentBlock.shakes += 1;
         };
 
         // emit particles
@@ -125,6 +128,15 @@ function animate(timestamp) {
 
     cursor.update(cnv.width,cX,cY);
 
+    boxes = boxes.filter(box => !box.mfd);
+
+    if(cb == undefined) {
+        let s = randomInt(100,150);
+        boxes.push(new Box(block,randomInt(200,cnv.width-200),randomInt(0,cnv.height-100),s,s,3));
+    }
+
+    cb = boxes[0];
+
     inBlock = false;
     boxes.forEach(box => {
         // if in box
@@ -134,7 +146,7 @@ function animate(timestamp) {
                 currentBlock = box;
             }
         });
-        box.update(deltaTime);
+        box.update(deltaTime,cnv.height);
     });
     
     // droplets

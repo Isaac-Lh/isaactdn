@@ -1,5 +1,5 @@
 class Box {
-    constructor(img,x,y,w,h,color) {
+    constructor(img,x,y,w,h,maxShakes) {
         this.img = img;
 
         this.bX = x;
@@ -11,9 +11,12 @@ class Box {
         this.w = w;
         this.h = h;
 
-        this.color = color;
-
         this.easing = 0.01;
+
+        this.maxShakes = maxShakes;
+        this.shakes = 0;
+
+        this.mfd = false;
     }
 
     IsInPos(x,y) {
@@ -25,12 +28,21 @@ class Box {
         );     
     }
 
-    update(deltaTime) {
-        let dx = this.bX -this.x;
-        let dy = this.bY - this.y;
+    update(deltaTime,mH) {
+        if(this.y >= mH) {
+            this.mfd =true;
+            return;
+        }
 
-        this.x += Math.floor(dx * this.easing * deltaTime);
-        this.y += Math.floor(dy * this.easing * deltaTime);
+        if (this.shakes < this.maxShakes) {
+            let dx = this.bX -this.x;
+            let dy = this.bY - this.y;
+    
+            this.x += Math.floor(dx * this.easing * deltaTime);
+            this.y += Math.floor(dy * this.easing * deltaTime);
+        } else {
+            this.y += 2 * deltaTime
+        }
     }
 
     draw(ctx) {
