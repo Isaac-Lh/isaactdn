@@ -13,19 +13,23 @@ window.onresize = () => {
     cnv.height = window.innerHeight;
 }
 
-/*
-1)-add image wich represent cursor
-2)-hide the cursor
-3)-flip if in right side
-*/
-
 let mouseX = 0;
 let mouseY = 0;
 
+function setMouseCoords(x,y) {
+    mouseX = x;
+    mouseY = y;
+};
+
+// handle computer mouse mvse
 document.addEventListener("mousemove", e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+   setMouseCoords(e.clientX,e.clientY);
 })
+
+// handle phone mouse move
+document.addEventListener("touchmove", e => {
+    setMouseCoords(e.touches[0].clientX,e.touches[0].clientY);
+});
 
 let cX = 0;
 let cY = 0;
@@ -40,7 +44,7 @@ hitSound.volume = 0;
 
 let hs;
 
-window.addEventListener("click", e => {
+function spawnParticles() {
     // emit particles
     for(i=0; i < 10; i++) {
         let size = randomInt(21,32);
@@ -52,7 +56,10 @@ window.addEventListener("click", e => {
 
     //play hit sound
     hs.play();
-});
+};
+
+window.addEventListener("click", spawnParticles);
+window.addEventListener("touchstart", spawnParticles);
 
 
 let dustParticles = [];
