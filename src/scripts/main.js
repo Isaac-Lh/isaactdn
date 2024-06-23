@@ -36,7 +36,9 @@ let cursor = new Cursor();
 let nutTex = document.getElementById("nut");
 
 let hitSound = document.getElementById("hitHurt");
-hitSound.volume = 0.3;
+hitSound.volume = 0;
+
+let hs;
 
 window.addEventListener("click", e => {
     // emit particles
@@ -45,8 +47,11 @@ window.addEventListener("click", e => {
         dustParticles.push(new Particle(nutTex,cX,cY,Math.random() * 2 - 1, 0.5 +Math.random() * 0.5,size,size));
     };
 
+    hs = new Audio(hitSound.src);
+    hs.volume = 0.3;
+
     //play hit sound
-    hitSound.play();
+    hs.play();
 });
 
 
@@ -89,7 +94,6 @@ function animate(timestamp) {
             dp.update(deltaTime);
         }
     })
-
 
     //draw
     ctx.clearRect(0,0,cnv.width,cnv.height);
