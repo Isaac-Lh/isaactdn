@@ -12,6 +12,8 @@ class Box {
         this.h = h;
 
         this.color = color;
+
+        this.easing = 0.01;
     }
 
     IsInPos(x,y) {
@@ -24,7 +26,11 @@ class Box {
     }
 
     update(deltaTime) {
-    
+        let dx = this.bX -this.x;
+        let dy = this.bY - this.y;
+
+        this.x += Math.floor(dx * this.easing * deltaTime);
+        this.y += Math.floor(dy * this.easing * deltaTime);
     }
 
     draw(ctx) {

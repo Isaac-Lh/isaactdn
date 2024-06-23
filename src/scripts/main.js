@@ -53,6 +53,7 @@ let audios = [];
 
 // boxes
 let boxes = [new Box(block,50,50,150,150,"red")];
+let currentBlock = null;
 
 let inBlock = false;
 
@@ -73,6 +74,11 @@ function playSound(sound,volume) {
 
 function handleClick() {
     if (inBlock) {
+        if (currentBlock != null) {
+            currentBlock.x += randomInt(-20,20);
+            currentBlock.y += randomInt(-20,20);
+        };
+
         // emit particles
         for(i=0; i < 10; i++) {
             let partTex = partsTexs[randomInt(0,partsTexs.length-1)]
@@ -125,6 +131,7 @@ function animate(timestamp) {
         boxes.forEach(box => {
             if (box.IsInPos(mouseX,mouseY)) {
                 inBlock = true;
+                currentBlock = box;
             }
         });
         box.update(deltaTime);
