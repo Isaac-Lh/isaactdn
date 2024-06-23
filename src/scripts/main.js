@@ -42,7 +42,7 @@ let nutTex = document.getElementById("nut");
 let hitSound = document.getElementById("hitHurt");
 hitSound.volume = 0;
 
-let hs;
+let audios = [];
 
 function spawnParticles() {
     // emit particles
@@ -51,20 +51,25 @@ function spawnParticles() {
         dustParticles.push(new Particle(nutTex,cX,cY,Math.random() * 2 - 1, 0.5 +Math.random() * 0.5,size,size));
     };
 
-    hs = new Audio(hitSound.src);
+    let hs = new Audio(hitSound.src);
     hs.volume = 0.3;
 
     //play hit sound
     hs.play();
+    audios.push(hs);
+
+    hs.addEventListener("ended", () => {
+        audios.splice(audios.indexOf(hs),1);
+    });
+
+    return;
 };
 
 window.addEventListener("click", spawnParticles);
-window.addEventListener("touchstart", spawnParticles);
-
-
-let dustParticles = [];
+window.addEventListener("touchend", spawnParticles);
 
 // particles setup
+let dustParticles = [];
 let drops = [];
 
 for(i=0;i<100;i++) {
