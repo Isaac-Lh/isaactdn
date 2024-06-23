@@ -66,7 +66,6 @@ function spawnParticles() {
 };
 
 window.addEventListener("click", spawnParticles);
-window.addEventListener("touchend", spawnParticles);
 
 // particles setup
 let dustParticles = [];
